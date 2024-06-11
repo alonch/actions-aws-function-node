@@ -57,7 +57,7 @@ runs:
         YAML: ${{ inputs.env }}
       run: |
         JSON=$(echo "$YAML" | yq -o=json '. // {}')
-        echo "json=$JSON" >> $GITHUB_OUTPUT
+        echo "json='$JSON'" >> $GITHUB_OUTPUT
     - name: parse permissions
       shell: bash
       id: parse-input-permissions
@@ -65,7 +65,7 @@ runs:
         YAML: ${{ inputs.permissions }}
       run: |
         JSON=$(echo "$YAML" | yq -o=json '. // {}')
-        echo "json=$JSON" >> $GITHUB_OUTPUT
+        echo "json='$JSON'" >> $GITHUB_OUTPUT
     - name: init 
       shell: bash
       working-directory: ${{ github.action_path }}
