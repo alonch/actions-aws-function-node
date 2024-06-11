@@ -85,7 +85,7 @@ runs:
         TF_VAR_memory: ${{ inputs.memory }}
         TF_VAR_env: ${{ steps.parse-input-env.json }}
         TF_VAR_architecture: ${{ inputs.arm != 'false' && 'arm64' || 'x86_64'}}
-        TF_VAR_permissions: steps.parse-input-permissions.json }}
+        TF_VAR_permissions: ${{ steps.parse-input-permissions.json }}
         TF_VAR_artifacts: ${{env.GITHUB_WORKSPACE}}/${{ inputs.artifacts }}
         TF_VAR_timeout: ${{ inputs.timeout }}
         TF_VAR_allow-public-access: ${{ inputs.allow-public-access }}
