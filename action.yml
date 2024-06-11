@@ -29,9 +29,11 @@ inputs:
   env: 
     description: List of environment variables in YML format
     required: false
-    default: ""
+    default: |
+      CREATE_BY: alonch/actions-aws-function-node
   permissions:
     description: "List of permissions following Github standard of service: read or write. In YML format"
+    default: ""
   artifacts:
     description: This folder will be zip and deploy to Lambda
   timeout: 
@@ -54,7 +56,7 @@ runs:
       env: 
         YAML: ${{ inputs.env }}
       run: |
-        JSON=$(echo "$YAML" | yq -o=json)
+        JSON=$(echo "$YAML" | yq -o=json '. // {}')
         echo "json=$JSON" >> $GITHUB_OUTPUT
     - name: parse permissions
       shell: bash
@@ -62,7 +64,7 @@ runs:
       env: 
         YAML: ${{ inputs.permissions }}
       run: |
-        JSON=$(echo "$YAML" | yq -o=json)
+        JSON=$(echo "$YAML" | yq -o=json '. // {}')
         echo "json=$JSON" >> $GITHUB_OUTPUT
     - name: init 
       shell: bash
@@ -83,10 +85,10 @@ runs:
         TF_VAR_entrypoint-file: ${{ inputs.entrypoint-file}}
         TF_VAR_entrypoint-function: ${{ inputs.entrypoint-function }}
         TF_VAR_memory: ${{ inputs.memory }}
-        TF_VAR_env: ${{ steps.parse-input-env.json }}
+        TF_VAR_env: "${{ steps.parse-input-env.json }}"
         TF_VAR_architecture: ${{ inputs.arm != 'false' && 'arm64' || 'x86_64'}}
-        TF_VAR_permissions: ${{ steps.parse-input-permissions.json }}
-        TF_VAR_artifacts: ${{env.GITHUB_WORKSPACE}}/${{ inputs.artifacts }}
+        TF_VAR_permissions: "${{ steps.parse-input-permissions.json }}"
+        TF_VAR_artifacts: ${{ github.workspace	}}/${{ inputs.artifacts }}
         TF_VAR_timeout: ${{ inputs.timeout }}
         TF_VAR_allow-public-access: ${{ inputs.allow-public-access }}
         ACTION: ${{ inputs.action }}

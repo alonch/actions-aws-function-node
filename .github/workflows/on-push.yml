@@ -25,7 +25,7 @@ jobs:
           name: actions-aws-function-node-demo
           entrypoint-file: src/index.js
           entrypoint-function: handler
-          actifacts: dist
+          artifacts: dist
           allow-public-access: true
 
               
