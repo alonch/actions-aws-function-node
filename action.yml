@@ -57,7 +57,7 @@ runs:
         cat <<-EOF > data.yaml
         ${{ inputs.env }}
         EOF
-        JSON=$(yq -o=json '. // {}' data.yaml | tr -d '\n')
+        JSON=$(yq -o=json '. // {}' data.yaml | jq -c '.')
         echo "json='$JSON'" >> $GITHUB_OUTPUT
     - name: parse permissions
       shell: bash
@@ -66,7 +66,7 @@ runs:
         cat <<-EOF > data.yaml
         ${{ inputs.permissions }}
         EOF
-        JSON=$(yq -o=json '. // {}' data.yaml | tr -d '\n')
+        JSON=$(yq -o=json '. // {}' data.yaml | jq -c '.')
         echo "json='$JSON'" >> $GITHUB_OUTPUT
     - name: init 
       shell: bash
