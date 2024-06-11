@@ -53,18 +53,20 @@ runs:
     - name: parse env
       shell: bash
       id: parse-input-env
-      run: |-
+      run: |
         JSON=$(cat <<EOF | yq -o=json '. // {}'
         ${{ inputs.env }}
-        EOF)
+        EOF 
+        )
         echo "json='$JSON'" >> $GITHUB_OUTPUT
     - name: parse permissions
       shell: bash
       id: parse-input-permissions
-      run: |-
+      run: |
         JSON=$(cat <<EOF | yq -o=json '. // {}'
         ${{ inputs.permissions }}
-        EOF)
+        EOF 
+        )
         echo "json='$JSON'" >> $GITHUB_OUTPUT
     - name: init 
       shell: bash
