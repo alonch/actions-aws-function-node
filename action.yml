@@ -54,7 +54,7 @@ runs:
       env: 
         YAML: ${{ inputs.env }}
       run: |
-        JSON=$(echo "$YAML" | yq -o=json '. // {}')
+        JSON=$(echo "$YAML" | yq -o=json)
         echo "json=$JSON" >> $GITHUB_OUTPUT
     - name: parse permissions
       shell: bash
@@ -62,7 +62,7 @@ runs:
       env: 
         YAML: ${{ inputs.permissions }}
       run: |
-        JSON=$(echo "$YAML" | yq -o=json '. // {}')
+        JSON=$(echo "$YAML" | yq -o=json)
         echo "json=$JSON" >> $GITHUB_OUTPUT
     - name: init 
       shell: bash
