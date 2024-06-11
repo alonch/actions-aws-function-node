@@ -29,10 +29,18 @@ inputs:
   env: 
     description: List of environment variables in YML format
     required: false
-    default: |-
+    default: |
       CREATE_BY: alonch/actions-aws-function-node
   permissions:
-    description: "List of permissions following Github standard of service: read or write. In YML format"
+    description: | 
+      List of permissions following Github standard of service: read or write. In YML format
+      For example: 
+      ```
+      with:
+        permissions: | 
+          s3: read
+          dynamodb: write
+      ````
     default: ""
   artifacts:
     description: This folder will be zip and deploy to Lambda

@@ -20,8 +20,8 @@ Provision a Lambda function`
 | `entrypoint-file` | <p>Path to entry file</p> | `true` | `""` |
 | `entrypoint-function` | <p>Function on the <code>entrypoint-file</code> to handle events</p> | `true` | `""` |
 | `memory` | <p>128 (in MB) to 10,240 (in MB)</p> | `false` | `128` |
-| `env` | <p>List of environment variables in YML format</p> | `false` | `CREATE_BY: alonch/actions-aws-function-node` |
-| `permissions` | <p>List of permissions following Github standard of service: read or write. In YML format</p> | `false` | `""` |
+| `env` | <p>List of environment variables in YML format</p> | `false` | `CREATE_BY: alonch/actions-aws-function-node ` |
+| `permissions` | <p>List of permissions following Github standard of service: read or write. In YML format For example: </p> <pre><code>with:   permissions: |      s3: read     dynamodb: write </code></pre> <p>`</p> | `false` | `""` |
 | `artifacts` | <p>This folder will be zip and deploy to Lambda</p> | `false` | `""` |
 | `timeout` | <p>Maximum time in seconds before aborting the execution</p> | `false` | `3` |
 | `allow-public-access` | <p>Generate a public URL. WARNING: ANYONE ON THE INTERNET CAN RUN THIS FUNCTION</p> | `false` | `""` |
