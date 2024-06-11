@@ -21,6 +21,9 @@ variable "memory" {
 variable "env" {
   type        = map(string)
   description = "Environment Variables"
+  default = {
+    "CREATED_BY" = "alonch/actions-aws-function-node"
+  }
 }
 variable "architecture" {
   type        = string
@@ -29,6 +32,7 @@ variable "architecture" {
 variable "permissions" {
   type        = map(string)
   description = "service with access level read/write"
+  default = {}
 }
 variable "artifacts" {
   type = string
