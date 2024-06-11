@@ -53,18 +53,18 @@ runs:
     - name: parse env
       shell: bash
       id: parse-input-env
-      env: 
-        YAML: ${{ inputs.env }}
       run: |
-        JSON=$(echo "$YAML" | yq -o=json '. // {}')
+        JSON=$(cat <<EOF | yq -o=json '. // {}'
+        ${{ inputs.env }}
+        EOF)
         echo "json='$JSON'" >> $GITHUB_OUTPUT
     - name: parse permissions
       shell: bash
       id: parse-input-permissions
-      env: 
-        YAML: ${{ inputs.permissions }}
       run: |
-        JSON=$(echo "$YAML" | yq -o=json '. // {}')
+        JSON=$(cat <<EOF | yq -o=json '. // {}'
+        ${{ inputs.permissions }}
+        EOF)
         echo "json='$JSON'" >> $GITHUB_OUTPUT
     - name: init 
       shell: bash
