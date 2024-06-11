@@ -29,7 +29,7 @@ inputs:
   env: 
     description: List of environment variables in YML format
     required: false
-    default: |
+    default: |-
       CREATE_BY: alonch/actions-aws-function-node
   permissions:
     description: "List of permissions following Github standard of service: read or write. In YML format"
@@ -57,7 +57,9 @@ runs:
         cat <<-EOF > data.yaml
         ${{ inputs.env }}
         EOF
-        JSON=$(yq -o=json '. // {}' data.yaml)
+        cat data.yaml
+        JSON=$(yq -o=json '. // {}' data.yaml | tr -d '\n')
+        echo $JSON
         echo "json='$JSON'" >> $GITHUB_OUTPUT
     - name: parse permissions
       shell: bash
@@ -66,7 +68,7 @@ runs:
         cat <<-EOF > data.yaml
         ${{ inputs.permissions }}
         EOF
-        JSON=$(yq -o=json '. // {}' data.yaml)
+        JSON=$(yq -o=json '. // {}' data.yaml | tr -d '\n')
         echo "json='$JSON'" >> $GITHUB_OUTPUT
     - name: init 
       shell: bash
