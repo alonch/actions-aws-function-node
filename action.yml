@@ -53,7 +53,7 @@ runs:
     - name: parse env
       shell: bash
       id: parse-input-env
-      run: |
+      run: |-
         JSON=$(cat <<EOF | yq -o=json '. // {}'
         ${{ inputs.env }}
         EOF)
@@ -61,7 +61,7 @@ runs:
     - name: parse permissions
       shell: bash
       id: parse-input-permissions
-      run: |
+      run: |-
         JSON=$(cat <<EOF | yq -o=json '. // {}'
         ${{ inputs.permissions }}
         EOF)
