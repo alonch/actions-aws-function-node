@@ -1,0 +1,112 @@
+name: 'Actions AWS Function for Node'
+description: 'Provision a Lambda function`'
+inputs:
+  action: 
+    description: "Desire outcome: apply, plan or destroy"
+    required: false
+    default: "apply"
+  name:
+    description: Function name
+    required: true
+  arm:
+    description: Run in ARM compute
+    required: false
+    default: "false"
+  node-version:
+    description: "NodeJS version, Supported versions: 16, 18 and 20"
+    required: false
+    default: "20"
+  entrypoint-file:
+    description: Path to entry file
+    required: true
+  entrypoint-function:
+    description: Function on the `entrypoint-file` to handle events
+    required: true
+  memory:
+    description: 128 (in MB) to 10,240 (in MB)
+    required: false
+    default: "128"
+  env: 
+    description: List of environment variables in YML format
+    required: false
+    default: ""
+  permissions:
+    description: "List of permissions following Github standard of service: read or write. In YML format"
+  artifacts:
+    description: This folder will be zip and deploy to Lambda
+  timeout: 
+    description: Maximum time in seconds before aborting the execution 
+    default: "3"
+  allow-public-access:
+    description: "Generate a public URL. WARNING: ANYONE ON THE INTERNET CAN RUN THIS FUNCTION"
+  
+runs:
+  using: "composite"
+  steps:
+    - name: Set up yq
+      shell: bash
+      run: |
+        sudo wget https://github.com/mikefarah/yq/releases/download/v4.7.0/yq_linux_amd64 -O /usr/bin/yq
+        sudo chmod +x /usr/bin/yq
+    - name: parse env
+      shell: bash
+      id: parse-input-env
+      env: 
+        YAML: ${{ inputs.env }}
+      run: |
+        JSON=$(echo "$YAML" | yq -o=json '. // {}')
+        echo "json=$JSON" >> $GITHUB_OUTPUT
+    - name: parse permissions
+      shell: bash
+      id: parse-input-permissions
+      env: 
+        YAML: ${{ inputs.permissions }}
+      run: |
+        JSON=$(echo "$YAML" | yq -o=json '. // {}')
+        echo "json=$JSON" >> $GITHUB_OUTPUT
+    - name: init 
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env: 
+        TF_BACKEND_key: "actions-aws-function-node/${{ inputs.name }}"
+      run: |
+        terraform init \
+          -backend-config="bucket=$TF_BACKEND_s3" \
+          -backend-config="dynamodb_table=$TF_BACKEND_dynamodb" \
+          -backend-config="key=$TF_BACKEND_key" 
+    - name: run action
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env: 
+        TF_VAR_runtime: "nodejs${{ inputs.node-version }}.x" # for example: nodejs20.x
+        TF_VAR_entrypoint-file: ${{ inputs.entrypoint-file}}
+        TF_VAR_entrypoint-function: ${{ inputs.entrypoint-function }}
+        TF_VAR_memory: ${{ inputs.memory }}
+        TF_VAR_env: ${{ steps.parse-input-env.json }}
+        TF_VAR_architecture: ${{ inputs.ar != "false" && "arm64" || "x86_64"}}
+        TF_VAR_permissions: steps.parse-input-permissions.json }}
+        TF_VAR_artifacts: ${{env.GITHUB_WORKSPACE}}/${{ inputs.artifacts }}
+        TF_VAR_timeout: ${{ inputs.timeout }}
+        TF_VAR_name: ${{ inputs.name }}
+        TF_VAR_allow-public-access: ${{ inputs.allow-public-access }}
+        ACTION: ${{ inputs.action }}
+        # we need to add '-auto-aprove' for apply/destroy
+        ACTION_ARGS: ${{ inputs.action != 'plan' && '-auto-approve' || '' }} 
+      run: terraform ${{ env.ACTION }} ${{ env.ACTION_ARGS }}
+    # - name: set outputs
+    #   if: ${{ inputs.action == 'apply' }}
+    #   working-directory: ${{ github.action_path }}
+    #   shell: bash
+    #   run: |
+    #     terraform output -raw bucket_name
+    #     ACTIONS_AWS_WEBSITE_BUCKET=$(terraform output -raw bucket_name)
+    #     if [ -n "$ACTIONS_AWS_WEBSITE_BUCKET" ]; then 
+    #       echo "ACTIONS_AWS_WEBSITE_BUCKET=$ACTIONS_AWS_WEBSITE_BUCKET" >> $GITHUB_ENV
+    #       echo "domain-bucket=$ACTIONS_AWS_WEBSITE_BUCKET" >> $GITHUB_OUTPUT
+    #     fi
+        
+    #     ACTIONS_AWS_DOMAIN=$(terraform output -raw domain)
+    #     if [ -n "$ACTIONS_AWS_DOMAIN" ]; then
+    #       echo "ACTIONS_AWS_DOMAIN=$ACTIONS_AWS_DOMAIN" >> $GITHUB_ENV
+    #       echo "domain=$ACTIONS_AWS_DOMAIN" >> $GITHUB_OUTPUT
+    #     fi
