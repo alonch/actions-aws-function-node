@@ -5,7 +5,7 @@
 <!-- action-docs-description source="action.yml" -->
 ## Description
 
-Provision a Lambda function`
+Provision an AWS function
 <!-- action-docs-description source="action.yml" --> 
 
 <!-- action-docs-inputs source="action.yml" -->
