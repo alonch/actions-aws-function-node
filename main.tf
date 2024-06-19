@@ -11,8 +11,10 @@ locals {
   }
 
   policies = flatten(
-    ["arn:aws:iam::aws:policy/AWSLambdaBasicExecutionRole"],
-    [for service, access_level in var.permissions : local.services[service][access_level]])
+    [
+      ["arn:aws:iam::aws:policy/AWSLambdaBasicExecutionRole"],
+      [for service, access_level in var.permissions : local.services[service][access_level]]
+  ])
 
   # input: 
   # var.entrypoint-file   = src/index.js 
