@@ -12,7 +12,7 @@ locals {
 
   policies = flatten(
     [
-      ["arn:aws:iam::aws:policy/AWSLambdaBasicExecutionRole"],
+      ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
       [for service, access_level in var.permissions : local.services[service][access_level]]
   ])
 
