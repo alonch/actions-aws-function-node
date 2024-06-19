@@ -1,5 +1,5 @@
 name: 'Actions AWS Function for Node'
-description: 'Provision an AWS function'
+description: 'Provision and AWS function'
 inputs:
   action: 
     description: "Desire outcome: apply, plan or destroy"
