@@ -38,6 +38,7 @@ inputs:
     description: This folder will be zip and deploy to Lambda
   node-modules:
     description: Path to the node_modules dependencies 
+    default: ""
   timeout: 
     description: Maximum time in seconds before aborting the execution 
     default: "3"
@@ -107,6 +108,7 @@ runs:
         TF_VAR_permissions: ${{ steps.parse-input-permissions.outputs.json }}
         TF_VAR_artifacts: ${{ github.workspace	}}/${{ inputs.artifacts }}
         TF_VAR_layer-artifacts: ./layer
+        TF_VAR_layer-enabled: ${{inputs.node-modules != ''}}
         TF_VAR_timeout: ${{ inputs.timeout }}
         TF_VAR_allow-public-access: ${{ inputs.allow-public-access }}
         ACTION: ${{ inputs.action }}
