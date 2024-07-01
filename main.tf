@@ -1,6 +1,6 @@
 locals {
   layers_enabled = var.layer-artifact != ""
-    services = {
+  services = {
     s3 = {
       read  = ["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"]
       write = ["arn:aws:iam::aws:policy/AmazonS3FullAccess"]
@@ -61,7 +61,7 @@ resource "aws_lambda_function" "this" {
 
   runtime = var.runtime
   timeout = var.timeout
-  
+
   layers = aws_lambda_layer_version.lambda_layer[*].arn
 
   environment {
@@ -78,14 +78,14 @@ resource "aws_lambda_function_url" "public_url" {
 data "archive_file" "lambda_layer" {
   count       = local.layers_enabled ? 1 : 0
   type        = "zip"
-  source_dir = var.layer-artifact
+  source_dir  = var.layer-artifact
   output_path = "lambda_layer_payload.zip"
 }
 
 resource "aws_lambda_layer_version" "lambda_layer" {
-  count      = local.layers_enabled ? 1 : 0
-  filename   = data.archive_file.lambda_layer[0].output_path
-  layer_name = var.name
-  source_code_hash = data.archive_file.lambda_layer.output_base64sha256
+  count               = local.layers_enabled ? 1 : 0
+  filename            = data.archive_file.lambda_layer[0].output_path
+  layer_name          = var.name
+  source_code_hash    = data.archive_file.lambda_layer[0].output_base64sha256
   compatible_runtimes = [var.runtime]
 }

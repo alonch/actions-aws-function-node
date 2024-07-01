@@ -1,5 +1,5 @@
 variable "name" {
-  type = string
+  type        = string
   description = "Lamda function name"
 }
 variable "runtime" {
@@ -8,7 +8,7 @@ variable "runtime" {
 }
 variable "entrypoint-file" {
   description = "Path to main file relative to the artifact folder"
-  type = string
+  type        = string
 }
 variable "entrypoint-function" {
   description = "Function to call in the entrypoint file"
@@ -31,20 +31,20 @@ variable "permissions" {
   description = "service with access level read/write"
 }
 variable "artifacts" {
-  type = string
+  type        = string
   description = "Path to the folder to zip and deploy to Lambda"
 }
 variable "timeout" {
-  type = string
+  type        = string
   description = "Max execution time before aborting"
 }
 variable "allow-public-access" {
-  type = bool
+  type        = bool
   description = "Generate a public URL. WARNING: ANYONE ON THE INTERNET CAN RUN THIS FUNCTION"
 }
 
 variable "layer-artifact" {
-  type = string
+  type        = string
   description = "Location to the node_modules to be package as Lambda Layer"
-  default = ""
+  default     = ""
 }
