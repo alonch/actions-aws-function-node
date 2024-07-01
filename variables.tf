@@ -42,3 +42,9 @@ variable "allow-public-access" {
   type = bool
   description = "Generate a public URL. WARNING: ANYONE ON THE INTERNET CAN RUN THIS FUNCTION"
 }
+
+variable "layer-artifact" {
+  type = string
+  description = "Location to the node_modules to be package as Lambda Layer"
+  default = ""
+}
