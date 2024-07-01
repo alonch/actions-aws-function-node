@@ -43,7 +43,7 @@ variable "allow-public-access" {
   description = "Generate a public URL. WARNING: ANYONE ON THE INTERNET CAN RUN THIS FUNCTION"
 }
 
-variable "layers-enabled" {
+variable "layer-enabled" {
   type = bool
   description = "Generate Layer for `layer-artifacts` folder"
   default = false

@@ -75,14 +75,14 @@ resource "aws_lambda_function_url" "public_url" {
 }
 
 data "archive_file" "lambda_layer" {
-  count       = var.layers-enabled ? 1 : 0
+  count       = var.layer-enabled ? 1 : 0
   type        = "zip"
   source_dir  = var.layer-artifacts
   output_path = "lambda_layer_payload.zip"
 }
 
 resource "aws_lambda_layer_version" "lambda_layer" {
-  count               = var.layers-enabled ? 1 : 0
+  count               = var.layer-enabled ? 1 : 0
   filename            = data.archive_file.lambda_layer[0].output_path
   layer_name          = var.name
   source_code_hash    = data.archive_file.lambda_layer[0].output_base64sha256
