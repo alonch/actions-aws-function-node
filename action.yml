@@ -36,6 +36,8 @@ inputs:
     default: ""
   artifacts:
     description: This folder will be zip and deploy to Lambda
+  node-modules:
+    description: Path to the node_modules dependencies 
   timeout: 
     description: Maximum time in seconds before aborting the execution 
     default: "3"
@@ -74,6 +76,13 @@ runs:
         EOF
         JSON=$(yq -o=json '. // {}' data.yaml | jq -c '.')
         echo "json=$JSON" >> $GITHUB_OUTPUT
+    - name: setup layer artifacts
+      if: ${{ inputs.node-modules != '' }}
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: |
+        mkdir -p ./layer/nodejs
+        cp -R ${{ github.workspace }}${{ inputs.node-modules }} ./layer/nodejs/
     - name: init 
       shell: bash
       working-directory: ${{ github.action_path }}
@@ -97,6 +106,7 @@ runs:
         TF_VAR_architecture: ${{ inputs.arm != 'false' && 'arm64' || 'x86_64'}}
         TF_VAR_permissions: ${{ steps.parse-input-permissions.outputs.json }}
         TF_VAR_artifacts: ${{ github.workspace	}}/${{ inputs.artifacts }}
+        TF_VAR_layer-artifacts: ./layer
         TF_VAR_timeout: ${{ inputs.timeout }}
         TF_VAR_allow-public-access: ${{ inputs.allow-public-access }}
         ACTION: ${{ inputs.action }}
