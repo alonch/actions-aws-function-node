@@ -11,7 +11,7 @@ inputs:
   arm:
     description: Run in ARM compute
     required: false
-    default: "false"
+    default: "true"
   node-version:
     description: "NodeJS version, Supported versions: 16, 18 and 20"
     required: false

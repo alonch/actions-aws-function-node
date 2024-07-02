@@ -15,7 +15,7 @@ Provision an AWS function
 | --- | --- | --- | --- |
 | `action` | <p>Desire outcome: apply, plan or destroy</p> | `false` | `apply` |
 | `name` | <p>Function name</p> | `true` | `""` |
-| `arm` | <p>Run in ARM compute</p> | `false` | `false` |
+| `arm` | <p>Run in ARM compute</p> | `false` | `true` |
 | `node-version` | <p>NodeJS version, Supported versions: 16, 18 and 20</p> | `false` | `20` |
 | `entrypoint-file` | <p>Path to entry file</p> | `true` | `""` |
 | `entrypoint-function` | <p>Function on the <code>entrypoint-file</code> to handle events</p> | `true` | `""` |
