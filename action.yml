@@ -82,7 +82,7 @@ runs:
       shell: bash
       run: |
         mkdir -p ${{ github.action_path }}/layer/nodejs
-        cp -R ${{ inputs.node-modules }} ${{ github.action_path }}/layer/nodejs/
+        cp -R ${{ github.action_path }}/${{ inputs.node-modules }} ${{ github.action_path }}/layer/nodejs/
     - name: init 
       shell: bash
       working-directory: ${{ github.action_path }}
