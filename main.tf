@@ -72,12 +72,12 @@ resource "aws_lambda_function_url" "public_url" {
   count              = var.allow-public-access ? 1 : 0
   function_name      = aws_lambda_function.this.function_name
   authorization_type = "NONE"
-  cors {
-    allow_origins     = ["*"]
-    allow_methods     = ["*"]
-    allow_headers     = ["*"]
-    expose_headers    = ["*"]
-  }
+  # cors {
+  #   allow_origins     = ["*"]
+  #   allow_methods     = ["*"]
+  #   allow_headers     = ["*"]
+  #   expose_headers    = ["*"]
+  # }
 }
 
 data "archive_file" "lambda_layer" {
